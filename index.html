@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mandy’s Video Store - Random Movie Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="wrap">
+      <!-- Header -->
+      <header class="store-header">
+        <div class="header-top">
+          <div class="header-left">
+            <h1 class="site-title">Mandy’s Video Store</h1>
+            <div class="site-sub">Random Movie Generator</div>
+          </div>
+
+          <div class="header-right">
+            <div class="header-boxes">
+              <!-- Left box: Choose staff member -->
+              <div class="header-box robot-select" id="robotBox">
+                <div class="box-title">Choose your staff member</div>
+                <label for="robot" class="sr-only"
+                  >Choose your staff member</label
+                >
+                <select id="robot" aria-label="Choose your staff member">
+                  <option value="Mandy" selected>Mandy</option>
+                  <option value="PP">PP</option>
+                  <option value="Charkins">Charkins</option>
+                  <option value="LPK">LPK</option>
+                  <option value="Marcus TX 17 Aspirin">
+                    Marcus TX 17 Aspirin
+                  </option>
+                  <option value="Kipper">Kipper</option>
+                  <option value="Fisher">Fisher</option>
+                  <option value="Adam">Adam</option>
+                  <option value="Graham Sanders">Graham Sanders</option>
+                  <option value="Finley">Finley</option>
+                  <option value="JLB99">JLB99</option>
+                </select>
+              </div>
+
+              <!-- Right box: Employee of the Month -->
+              <div class="header-box employee-badge" id="badgeBox">
+                <div class="box-title">Employee of the Month</div>
+                <div class="badge-name" id="employeeName">Mandy</div>
+                <div
+                  class="badge-quote"
+                  id="employeeQuote"
+                  aria-live="polite"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Generator panel -->
+      <section class="panel">
+        <div class="panel-head">
+          <span class="panel-title">Rental Desk</span>
+          <div class="controls center">
+            <button id="btnGenre" class="btn primary">Spin Genre</button>
+            <button id="btnDecade" class="btn" disabled>Spin Decade</button>
+            <button id="btnFilm" class="btn" disabled>Generate</button>
+          </div>
+        </div>
+
+        <div class="reels-row">
+          <div class="reel-block">
+            <label class="reel-label">Genre</label>
+            <div class="reel" id="genreReel">
+              <div id="genreCells" class="cells"></div>
+            </div>
+          </div>
+
+          <div class="reel-block">
+            <label class="reel-label">Decade</label>
+            <div class="reel" id="decadeReel">
+              <div id="decadeCells" class="cells"></div>
+            </div>
+          </div>
+
+          <div class="reel-block">
+            <label class="reel-label">Film</label>
+            <div class="reel" id="filmReel">
+              <div id="filmCells" class="cells"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hidden until a chosen candidate is selected -->
+        <div class="preview-area crt" id="previewArea" style="display: none">
+          <div id="filmPoster" class="poster-lg" aria-hidden="true"></div>
+          <div id="filmTitle" class="title" aria-live="polite"></div>
+          <div id="filmMeta" class="meta"></div>
+        </div>
+
+        <!-- Candidates -->
+        <div
+          id="candidatesPanel"
+          class="candidates-panel"
+          style="display: none"
+        >
+          <div class="panel-head sub">
+            <span class="panel-title">Counter Picks</span>
+          </div>
+
+          <div id="candidates" class="candidates" aria-live="polite"></div>
+
+          <div id="candidateMessage" class="candidate-message">
+            Please now generate your first film.
+          </div>
+
+          <div class="controls center">
+            <button id="candToggle" class="btn primary big-yellow">
+              Generate
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Lineup -->
+      <section class="panel">
+        <div class="panel-head">
+          <span class="panel-title">On The Counter</span>
+          <span id="lineupInfo" class="panel-hint">Waiting for films</span>
+        </div>
+
+        <div id="lineup" class="lineup shelf">
+          <div class="slot" data-slot="0">
+            <div class="head">
+              <span class="label">A</span><span>Empty</span>
+            </div>
+            <div class="poster blank" aria-hidden="true"></div>
+            <div class="title"></div>
+            <div class="tagline"></div>
+            <div class="byline"></div>
+          </div>
+          <div class="slot" data-slot="1">
+            <div class="head">
+              <span class="label">B</span><span>Empty</span>
+            </div>
+            <div class="poster blank" aria-hidden="true"></div>
+            <div class="title"></div>
+            <div class="tagline"></div>
+            <div class="byline"></div>
+          </div>
+          <div class="slot" data-slot="2">
+            <div class="head">
+              <span class="label">C</span><span>Empty</span>
+            </div>
+            <div class="poster blank" aria-hidden="true"></div>
+            <div class="title"></div>
+            <div class="tagline"></div>
+            <div class="byline"></div>
+          </div>
+        </div>
+
+        <div id="shuffleCaption" class="caption" style="display: none">
+          The films have been randomly re-ordered, please select A, B or C.
+        </div>
+
+        <div
+          id="rentalMessage"
+          class="rental-message"
+          style="display: none"
+        ></div>
+
+        <!-- Only reset down here after reveal -->
+        <div class="controls center" id="returnWrap" style="display: none">
+          <button id="returnBtn" class="btn primary big-yellow">
+            Return to Store
+          </button>
+        </div>
+      </section>
+
+      <!-- Pick & Mix Counter -->
+      <section class="panel sweet-panel">
+        <div class="panel-head">
+          <span class="panel-title">Pick & Mix Counter</span>
+        </div>
+        <div class="sweet-instruction">
+          Click Generate to pick a random sweety
+        </div>
+
+        <div class="sweet-slot light">
+          <div class="sweet-reel" id="sweetReel">
+            <div id="sweetCells" class="cells"></div>
+          </div>
+        </div>
+
+        <div class="controls center">
+          <button id="sweetToggle" class="btn primary">Generate</button>
+        </div>
+
+        <div id="sweetResult" class="sweet-result" aria-live="polite"></div>
+      </section>
+
+      <!-- Smooch -->
+      <div class="kiss-wrap">
+        <button id="kissBtn" class="btn kiss-btn">
+          Press here for an 80s Joan Collins smooch
+        </button>
+        <span id="kissNote" class="kiss-note" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <script src="script.js" defer></script>
+  </body>
+</html>
